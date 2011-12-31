@@ -1,0 +1,12 @@
+doxygen:
+- add doxygen support for this project.
+- add master (long) documentation to doxygen.
+- publicize the documentation for this somewhere (wiki on github ?!?).
+
+website:
+- do a website for this project.
+
+library:
+- wrap more functions.
+- do more tests.
+- perror support.
