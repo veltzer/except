@@ -11,9 +11,21 @@
 #include <sys/mman.h> // for mlock(2)
 #include <sys/ioctl.h> // for ioctl(2)
 
+#define __stringify_1(x) # x
+#define __stringify(x) __stringify_1(x)
+#define register_name(name) p_ ## name=(typeof(p_ ## name))dlsym(RTLD_NEXT, __stringify(name));\
+	if(p_ ## name==NULL) {\
+		fprintf(stderr,"error in dlsym on symbol [%s], [%s]\n",__stringify(name),dlerror());\
+		exit(1);\
+	}
+
 //static void* handle=NULL;
-static int (*p_ioctl)(int,unsigned long int,...);
 static const bool debug=false;
+//static const bool debug=true;
+
+// the functions
+static int (*p_ioctl)(int,unsigned long int,...);
+static void* (*p_malloc)(size_t);
 
 void except_debug(const char* msg) {
 	if(debug) {
@@ -24,30 +36,19 @@ void except_debug(const char* msg) {
 void except_init(void) __attribute__((constructor));
 void except_init(void) {
 	except_debug("in except_init");
-	/*
-	handle=dlopen(NULL, RTLD_LAZY);
-        if(handle==NULL) {
-		fprintf(stderr,"error in dlopen [%s]\n",dlerror());
-		exit(1);
-	}
-	*/
-	p_ioctl=(typeof(p_ioctl))dlsym(RTLD_NEXT, "ioctl");
-	if(p_ioctl==NULL) {
-		fprintf(stderr,"error in dlsym on symbol [%s], [%s]\n","ioctl",dlerror());
-		exit(1);
-	}
-	/*
-	if(dlclose(handle)) {
-		fprintf(stderr,"error in dlclose [%s]\n",dlerror());
-		exit(1);
-	}
-	*/
+	register_name(ioctl);
+	register_name(malloc);
 }
 
+/*
+ * Right now we don't need a destructor
+ */
+/*
 void except_fini(void) __attribute__((destructor));
 void except_fini(void) {
 	except_debug("in except_fini");
 }
+*/
 
 void except_error(const char* name) {
 	fprintf(stderr,"an error for [%s]\n",name);
@@ -59,6 +60,15 @@ int ioctl(int d,unsigned long int request,...) {
 	int ret=p_ioctl(d,request);
 	if(ret==-1) {
 		except_error("ioctl");
+	}
+	return ret;
+}
+
+void* malloc(size_t size) {
+	except_debug("in malloc");
+	void* ret=p_malloc(size);
+	if(ret==NULL) {
+		except_error("malloc");
 	}
 	return ret;
 }
