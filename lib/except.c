@@ -1,25 +1,21 @@
 #define _GNU_SOURCE
-#include <dlfcn.h>  // for dlopen(3), dlclose(3), dlerror(3), dlsym(3)
+#include <dlfcn.h>  // for dlsym(3), dlerror(3)
 #include <stdbool.h> // for type bool
+#include <stdio.h> // for printf(3), perror(3)
 
-#include <pthread.h> // for pthread_create(3), pthread_join(3)
-#include <stdio.h> // for vsnprintf(3), snprintf(3), fputs(3), printf(3), fprintf(3)
-#include <stdarg.h> // for va_start(3), va_end(3), va_list
-#include <stdlib.h> // for malloc(3), free(3), exit(3)
-#include <unistd.h> // for usleep(3)
-#include <syslog.h> // for syslog(3)
-#include <sys/mman.h> // for mlock(2)
+#include <stdlib.h> // for malloc(3)
 #include <sys/ioctl.h> // for ioctl(2)
 
+// stringify macros
 #define __stringify_1(x) # x
 #define __stringify(x) __stringify_1(x)
+
 #define register_name(name) p_ ## name=(typeof(p_ ## name))dlsym(RTLD_NEXT, __stringify(name));\
 	if(p_ ## name==NULL) {\
 		fprintf(stderr,"error in dlsym on symbol [%s], [%s]\n",__stringify(name),dlerror());\
 		exit(1);\
 	}
 
-//static void* handle=NULL;
 static const bool debug=false;
 //static const bool debug=true;
 
@@ -27,7 +23,7 @@ static const bool debug=false;
 static int (*p_ioctl)(int,unsigned long int,...);
 static void* (*p_malloc)(size_t);
 
-void except_debug(const char* msg) {
+inline void except_debug(const char* msg) {
 	if(debug) {
 		printf("[%s]\n",msg);
 	}
@@ -51,11 +47,13 @@ void except_fini(void) {
 */
 
 void except_error(const char* name) {
-	fprintf(stderr,"an error for [%s]\n",name);
+	perror(name);
+	//fprintf(stderr,"error occured in syscall [%s]\n",name);
 	exit(1);
 }
 
 int ioctl(int d,unsigned long int request,...) {
+	// BUG!!! pass the extra argument as well.
 	except_debug("in ioctl");
 	int ret=p_ioctl(d,request);
 	if(ret==-1) {

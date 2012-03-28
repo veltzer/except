@@ -71,16 +71,6 @@ clean: $(ALL_DEPS)
 	$(info doing [$@])
 	$(Q)rm -f $(OBJ) $(LIB) $(BIN)
 
-.PHONY: run
-run: $(BIN) $(ALL_DEPS)
-	$(info doing [$@])
-	$(Q)export LD_LIBRARY_PATH=. ; ./test/logging_speed
-
-.PHONY: run_debug
-run_debug: $(BIN) $(ALL_DEPS)
-	$(info doing [$@])
-	$(Q)export LD_LIBRARY_PATH=. ; gdb ./test/logging_speed
-
 .PHONY: install
 install: $(LIB) $(ALL_DEPS)
 	$(info doing [$@])

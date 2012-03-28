@@ -7,6 +7,6 @@ website:
 - do a website for this project.
 
 library:
+- find out how to call a function with all the arguments passed to me...
 - wrap more functions.
 - do more tests.
-- perror support.
