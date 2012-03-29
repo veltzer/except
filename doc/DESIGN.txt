@@ -1,0 +1,13 @@
+The major dilemma:
+- do we want people to add #include to except.h or not?
+Advantages:
+- we could emit the line/function/file that had the problem.
+Disadvantages:
+- The user needs to change her/his source code and recompile.
+Problems:
+- how do we overload the ioctl (or any other function) for that matter?
+
+Ideal:
+- have both. The user could include and then would get the extra info
+or he could avoid inclusion and use linking or runtime linking and get
+just error messages.
