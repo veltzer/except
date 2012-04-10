@@ -6,6 +6,9 @@
 #include <stdlib.h> // for malloc(3)
 #include <sys/ioctl.h> // for ioctl(2)
 
+#include "except.h"
+#include "exceptpp.h"
+
 // stringify macros
 #define __stringify_1(x) # x
 #define __stringify(x) __stringify_1(x)
@@ -16,6 +19,9 @@
 		exit(1);\
 	}
 
+// do you want to throw exceptions?
+static const bool throw=false;
+// do you want to debug the library?
 static const bool debug=false;
 //static const bool debug=true;
 
@@ -47,9 +53,13 @@ void except_fini(void) {
 */
 
 void except_error(const char* name) {
-	perror(name);
-	//fprintf(stderr,"error occured in syscall [%s]\n",name);
-	exit(1);
+	if(throw) {
+		except_throw(name);
+	} else {
+		perror(name);
+		//fprintf(stderr,"error occured in syscall [%s]\n",name);
+		exit(1);
+	}
 }
 
 int ioctl(int d,unsigned long int request,...) {
