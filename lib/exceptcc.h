@@ -13,8 +13,8 @@ On Debian systems, the complete text of the GNU General Public
 License can be found in /usr/share/common-licenses/GPL file.
 */
 
-#ifndef __exceptpp_h
-#define __exceptpp_h
+#ifndef __exceptcc_h
+#define __exceptcc_h
 
 #ifdef __cplusplus
 extern "C" {
@@ -24,4 +24,4 @@ extern "C" {
 };
 #endif
 
-#endif /* __exceptpp_h */
+#endif /* __exceptcc_h */

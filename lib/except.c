@@ -7,7 +7,7 @@
 #include <sys/ioctl.h> // for ioctl(2)
 
 #include "except.h"
-#include "exceptpp.h"
+#include "exceptcc.h"
 
 // stringify macros
 #define __stringify_1(x) # x
