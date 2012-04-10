@@ -1,6 +1,8 @@
 now:
 - get to a running C++ program that throws exceptions instead of printing errors
 	and exiting.
+- add "make run" targets to the makefile so that I would not have to do "sudo make install"
+	to run my demos.
 
 doxygen:
 - add doxygen support for this project.
