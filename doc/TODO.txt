@@ -1,3 +1,7 @@
+now:
+- get to a running C++ program that throws exceptions instead of printing errors
+	and exiting.
+
 doxygen:
 - add doxygen support for this project.
 - add master (long) documentation to doxygen.
