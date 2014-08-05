@@ -7,3 +7,6 @@ libelfsh
 http://garr.dl.sourceforge.net/project/elftoolchain/Documentation/libelf-by-example/20101106/libelf-by-example.pdf
 http://sourceforge.net/apps/trac/elftoolchain/#GettingStarted
 https://fedorahosted.org/elfutils/
+
+Peter Miller has a library to explain errors...
+http://libexplain.sourceforge.net/

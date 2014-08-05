@@ -52,7 +52,7 @@ void except_fini(void) {
 }
 */
 
-void except_error(const char* name) {
+inline void except_error(const char* name) {
 	if(throw) {
 		except_throw(name);
 	} else {

@@ -3,6 +3,7 @@ now:
 	and exiting.
 - add "make run" targets to the makefile so that I would not have to do "sudo make install"
 	to run my demos.
+- use LDPRELOAD or LD_LIBRARY_PATH to run the tests that do not link.
 
 doxygen:
 - add doxygen support for this project.

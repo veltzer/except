@@ -9,6 +9,8 @@ import subprocess # for check_call()
 
 packs=[
 	'doxygen',
+	'libexplain30',
+	'libexplain-dev',
 ]
 
 args=['sudo','apt-get','install']
