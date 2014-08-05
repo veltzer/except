@@ -1,11 +1,17 @@
 The major dilemma:
-- do we want people to add #include to except.h or not?
+- do we want people to add "#include except.h" or not?
+- do we want people to change their function names? say
+	call 'except_ioctl' instead of 'ioctl'?
 Advantages:
 - we could emit the line/function/file that had the problem.
 Disadvantages:
 - The user needs to change her/his source code and recompile.
 Problems:
 - how do we overload the ioctl (or any other function) for that matter?
+
+The include solution with code alteration
+=========================================
+- user will 1) #include "except.h"
 
 Ideal:
 - have both. The user could include and then would get the extra info
