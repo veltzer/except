@@ -2,13 +2,13 @@
 # user paramaeters #
 ####################
 # should we show commands executed ?
-DO_MKDBG?=0
+DO_MKDBG:=0
 # should we depend on the date of the makefile itself ?
-DO_MAKEDEPS?=1
+DO_MAKEDEPS:=1
 # do you want debugging enabled?
-DO_DEBUG?=0
+DO_DEBUG:=0
 # target folder
-TARGET_DIR?=/usr
+TARGET_DIR:=/usr
 
 #######################
 # non user parameters #
