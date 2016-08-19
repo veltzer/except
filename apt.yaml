@@ -1,0 +1,6 @@
+---
+packages:
+        - name: doxygen
+        - name: libexplain51
+        - name: libexplain-dev
+        - name: libexplain-doc
