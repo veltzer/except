@@ -76,6 +76,7 @@ LD_EMPTY:=$(LD_BASE)
 
 .PHONY: all
 all: $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC) $(ALL_DEPS)
+	@true
 
 # special targets
 

@@ -29,7 +29,7 @@ static const bool debug=false;
 static int (*p_ioctl)(int,unsigned long int,...);
 static void* (*p_malloc)(size_t);
 
-inline void except_debug(const char* msg) {
+static inline void except_debug(const char* msg) {
 	if(debug) {
 		printf("[%s]\n",msg);
 	}
@@ -52,7 +52,7 @@ void except_fini(void) {
 }
 */
 
-inline void except_error(const char* name) {
+static inline void except_error(const char* name) {
 	if(throw) {
 		except_throw(name);
 	} else {
