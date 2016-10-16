@@ -61,7 +61,7 @@ CFLAGS:=$(BASE_FLAGS) -I$(DIR) -Itest
 CXXFLAGS:=$(BASE_FLAGS) -I$(DIR) -Itest
 LDFLAGS:=-shared -fpic
 LIBS:=-ldl
-ALL_DEPS:=Makefile
+ALL_DEP:=Makefile
 TEST_DIR:=test
 TEST_SRC:=$(shell find $(TEST_DIR) -type f -and -name "*.c")
 TEST_OBJ:=$(addsuffix .o,$(basename $(TEST_SRC)))
@@ -75,13 +75,13 @@ LD_LIBCC:=$(LD_BASE) -L. -l$(LIBNAMECC)
 LD_EMPTY:=$(LD_BASE)
 
 .PHONY: all
-all: $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC) $(ALL_DEPS)
+all: $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC) $(ALL_DEP)
 	@true
 
 # special targets
 
 .PHONY: debug
-debug: $(ALL_DEPS)
+debug: $(ALL_DEP)
 	$(info DIR is $(DIR))
 	$(info SRC is $(SRC))
 	$(info SRCCC is $(SRCCC))
@@ -101,12 +101,12 @@ debug: $(ALL_DEPS)
 	$(info TARGET_INC is $(TARGET_INC))
 
 .PHONY: clean
-clean: $(ALL_DEPS)
+clean: $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)rm -f $(OBJ) $(OBJCC) $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC) $(TEST_OBJ) $(TEST_OBJCC)
 
 .PHONY: install
-install: $(LIB) $(LIBCC) $(LIBCC) $(ALL_DEPS)
+install: $(LIB) $(LIBCC) $(LIBCC) $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)sudo install -m 755 $(LIB) $(TARGET_LIB)
 	$(Q)sudo install -m 755 $(LIBCC) $(TARGET_LIB)
@@ -115,27 +115,27 @@ install: $(LIB) $(LIBCC) $(LIBCC) $(ALL_DEPS)
 
 # rules
 
-$(LIB): $(OBJ) $(ALL_DEPS)
+$(LIB): $(OBJ) $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)$(CC) $(LDFLAGS) -o $@ $(OBJ) $(LIBS)
-$(LIBCC): $(OBJ) $(OBJCC) $(ALL_DEPS)
+$(LIBCC): $(OBJ) $(OBJCC) $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)$(CXX) $(LDFLAGS) -o $@ $(OBJ) $(OBJCC) $(LIBS)
-$(OBJ): %.o: %.c $(ALL_DEPS)
+$(OBJ): %.o: %.c $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)$(CC) -c $(CFLAGS) -o $@ $<
-$(OBJCC): %.o: %.cc $(ALL_DEPS)
+$(OBJCC): %.o: %.cc $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)$(CXX) -c $(CXXFLAGS) -o $@ $<
-test/test_link.exe: test/test_link.c $(LIB) $(ALL_DEPS)
+test/test_link.exe: test/test_link.c $(LIB) $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)$(CC) $(CFLAGS) -o $@ $< $(LD_LIB)
-test/test_linkcc.exe: test/test_linkcc.cc $(LIBCC) $(ALL_DEPS)
+test/test_linkcc.exe: test/test_linkcc.cc $(LIBCC) $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)$(CXX) $(CXXFLAGS) -o $@ $< $(LD_LIBCC)
-test/test_nolink.exe: test/test_nolink.c $(ALL_DEPS)
+test/test_nolink.exe: test/test_nolink.c $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)$(CC) $(CFLAGS) -o $@ $< $(LD_EMPTY)
-test/test_nolinkcc.exe: test/test_nolinkcc.cc $(ALL_DEPS)
+test/test_nolinkcc.exe: test/test_nolinkcc.cc $(ALL_DEP)
 	$(info doing [$@])
 	$(Q)$(CXX) $(CXXFLAGS) -o $@ $< $(LD_EMPTY)
