@@ -8,3 +8,8 @@
 */*.o
 test/*.exe
 /tools
+/tools.stamp
+# python related
+__pycache__
+*.pyo
+*.pyc

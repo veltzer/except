@@ -75,8 +75,13 @@ LD_LIBCC:=$(LD_BASE) -L. -l$(LIBNAMECC)
 LD_EMPTY:=$(LD_BASE)
 
 .PHONY: all
-all: $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC) $(ALL_DEP)
+all: tools.stamp $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC) $(ALL_DEP)
 	@true
+
+tools.stamp: templardefs/deps.py
+	$(info doing [$@])
+	@templar_cmd install_deps
+	@make_helper touch-mkdir $@
 
 # special targets
 
