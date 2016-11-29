@@ -80,7 +80,7 @@ all: tools.stamp $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC) $(ALL_DEP)
 
 tools.stamp: templardefs/deps.py
 	$(info doing [$@])
-	@templar_cmd install_deps
+	@templar install_deps
 	@make_helper touch-mkdir $@
 
 # special targets
