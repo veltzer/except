@@ -78,9 +78,8 @@ LD_EMPTY:=$(LD_BASE)
 all: tools.stamp $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC) $(ALL_DEP)
 	@true
 
-tools.stamp: templardefs/deps.py
+tools.stamp: config/deps.py
 	$(info doing [$@])
-	@templar install_deps
 	@pymakehelper touch_mkdir $@
 
 # special targets
