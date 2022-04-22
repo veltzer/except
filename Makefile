@@ -3,12 +3,12 @@
 ####################
 # should we show commands executed ?
 DO_MKDBG:=0
-# should we depend on the date of the makefile itself ?
-DO_MAKEDEPS:=1
 # do you want debugging enabled?
 DO_DEBUG:=0
 # target folder
 TARGET_DIR:=/usr
+# do you want dependency on the Makefile itself ?
+DO_ALLDEP:=1
 
 #######################
 # non user parameters #
@@ -45,9 +45,9 @@ ifeq ($(DO_DEBUG),1)
 BASE_FLAGS:=$(BASE_FLAGS) -g2
 endif # DO_DEBUG
 
-ALL_DEP:=
-ifeq ($(DO_MAKEDEPS),1)
-	ALL_DEP:=$(ALL_DEP) Makefile
+# dependency on the makefile itself
+ifeq ($(DO_ALLDEP),1)
+.EXTRA_PREREQS+=$(foreach mk, ${MAKEFILE_LIST},$(abspath ${mk}))
 endif
 
 # the library we create
@@ -61,7 +61,6 @@ CFLAGS:=$(BASE_FLAGS) -I$(DIR) -Itest
 CXXFLAGS:=$(BASE_FLAGS) -I$(DIR) -Itest
 LDFLAGS:=-shared -fpic
 LIBS:=-ldl
-ALL_DEP:=Makefile
 TEST_DIR:=test
 TEST_SRC:=$(shell find $(TEST_DIR) -type f -and -name "*.c")
 TEST_OBJ:=$(addsuffix .o,$(basename $(TEST_SRC)))
@@ -75,7 +74,7 @@ LD_LIBCC:=$(LD_BASE) -L. -l$(LIBNAMECC)
 LD_EMPTY:=$(LD_BASE)
 
 .PHONY: all
-all: tools.stamp $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC) $(ALL_DEP)
+all: tools.stamp $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC)
 	@true
 
 tools.stamp: config/deps.py
@@ -85,7 +84,7 @@ tools.stamp: config/deps.py
 # special targets
 
 .PHONY: debug
-debug: $(ALL_DEP)
+debug:
 	$(info DIR is $(DIR))
 	$(info SRC is $(SRC))
 	$(info SRCCC is $(SRCCC))
@@ -105,12 +104,12 @@ debug: $(ALL_DEP)
 	$(info TARGET_INC is $(TARGET_INC))
 
 .PHONY: clean
-clean: $(ALL_DEP)
+clean:
 	$(info doing [$@])
 	$(Q)rm -f $(OBJ) $(OBJCC) $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC) $(TEST_OBJ) $(TEST_OBJCC)
 
 .PHONY: install
-install: $(LIB) $(LIBCC) $(LIBCC) $(ALL_DEP)
+install: $(LIB) $(LIBCC) $(LIBCC)
 	$(info doing [$@])
 	$(Q)sudo install -m 755 $(LIB) $(TARGET_LIB)
 	$(Q)sudo install -m 755 $(LIBCC) $(TARGET_LIB)
@@ -119,27 +118,27 @@ install: $(LIB) $(LIBCC) $(LIBCC) $(ALL_DEP)
 
 # rules
 
-$(LIB): $(OBJ) $(ALL_DEP)
+$(LIB): $(OBJ)
 	$(info doing [$@])
 	$(Q)$(CC) $(LDFLAGS) -o $@ $(OBJ) $(LIBS)
-$(LIBCC): $(OBJ) $(OBJCC) $(ALL_DEP)
+$(LIBCC): $(OBJ) $(OBJCC)
 	$(info doing [$@])
 	$(Q)$(CXX) $(LDFLAGS) -o $@ $(OBJ) $(OBJCC) $(LIBS)
-$(OBJ): %.o: %.c $(ALL_DEP)
+$(OBJ): %.o: %.c
 	$(info doing [$@])
 	$(Q)$(CC) -c $(CFLAGS) -o $@ $<
-$(OBJCC): %.o: %.cc $(ALL_DEP)
+$(OBJCC): %.o: %.cc
 	$(info doing [$@])
 	$(Q)$(CXX) -c $(CXXFLAGS) -o $@ $<
-test/test_link.exe: test/test_link.c $(LIB) $(ALL_DEP)
+test/test_link.exe: test/test_link.c $(LIB)
 	$(info doing [$@])
 	$(Q)$(CC) $(CFLAGS) -o $@ $< $(LD_LIB)
-test/test_linkcc.exe: test/test_linkcc.cc $(LIBCC) $(ALL_DEP)
+test/test_linkcc.exe: test/test_linkcc.cc $(LIBCC)
 	$(info doing [$@])
 	$(Q)$(CXX) $(CXXFLAGS) -o $@ $< $(LD_LIBCC)
-test/test_nolink.exe: test/test_nolink.c $(ALL_DEP)
+test/test_nolink.exe: test/test_nolink.c
 	$(info doing [$@])
 	$(Q)$(CC) $(CFLAGS) -o $@ $< $(LD_EMPTY)
-test/test_nolinkcc.exe: test/test_nolinkcc.cc $(ALL_DEP)
+test/test_nolinkcc.exe: test/test_nolinkcc.cc
 	$(info doing [$@])
 	$(Q)$(CXX) $(CXXFLAGS) -o $@ $< $(LD_EMPTY)
