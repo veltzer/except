@@ -79,7 +79,7 @@ all: tools.stamp $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC)
 
 tools.stamp: config/deps.py
 	$(info doing [$@])
-	@pymakehelper touch_mkdir $@
+	$(Q)pymakehelper touch_mkdir $@
 
 # special targets
 
