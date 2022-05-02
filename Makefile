@@ -74,12 +74,8 @@ LD_LIBCC:=$(LD_BASE) -L. -l$(LIBNAMECC)
 LD_EMPTY:=$(LD_BASE)
 
 .PHONY: all
-all: tools.stamp $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC)
+all: $(LIB) $(LIBCC) $(TEST_BIN) $(TEST_BINCC)
 	@true
-
-tools.stamp: config/deps.py
-	$(info doing [$@])
-	$(Q)pymakehelper touch_mkdir $@
 
 # special targets
 
