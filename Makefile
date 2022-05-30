@@ -64,10 +64,10 @@ LIBS:=-ldl
 TEST_DIR:=test
 TEST_SRC:=$(shell find $(TEST_DIR) -type f -and -name "*.c")
 TEST_OBJ:=$(addsuffix .o,$(basename $(TEST_SRC)))
-TEST_BIN:=$(addsuffix .exe,$(basename $(TEST_SRC)))
+TEST_BIN:=$(addsuffix .elf,$(basename $(TEST_SRC)))
 TEST_SRCCC:=$(shell find $(TEST_DIR) -type f -and -name "*.cc")
 TEST_OBJCC:=$(addsuffix .o,$(basename $(TEST_SRCCC)))
-TEST_BINCC:=$(addsuffix .exe,$(basename $(TEST_SRCCC)))
+TEST_BINCC:=$(addsuffix .elf,$(basename $(TEST_SRCCC)))
 LD_BASE:=-lpthread
 LD_LIB:=$(LD_BASE) -L. -l$(LIBNAME)
 LD_LIBCC:=$(LD_BASE) -L. -l$(LIBNAMECC)
@@ -126,15 +126,15 @@ $(OBJ): %.o: %.c
 $(OBJCC): %.o: %.cc
 	$(info doing [$@])
 	$(Q)$(CXX) -c $(CXXFLAGS) -o $@ $<
-test/test_link.exe: test/test_link.c $(LIB)
+test/test_link.elf: test/test_link.c $(LIB)
 	$(info doing [$@])
 	$(Q)$(CC) $(CFLAGS) -o $@ $< $(LD_LIB)
-test/test_linkcc.exe: test/test_linkcc.cc $(LIBCC)
+test/test_linkcc.elf: test/test_linkcc.cc $(LIBCC)
 	$(info doing [$@])
 	$(Q)$(CXX) $(CXXFLAGS) -o $@ $< $(LD_LIBCC)
-test/test_nolink.exe: test/test_nolink.c
+test/test_nolink.elf: test/test_nolink.c
 	$(info doing [$@])
 	$(Q)$(CC) $(CFLAGS) -o $@ $< $(LD_EMPTY)
-test/test_nolinkcc.exe: test/test_nolinkcc.cc
+test/test_nolinkcc.elf: test/test_nolinkcc.cc
 	$(info doing [$@])
 	$(Q)$(CXX) $(CXXFLAGS) -o $@ $< $(LD_EMPTY)
