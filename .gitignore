@@ -44,6 +44,7 @@ modules.order
 /src/kernel/.*.tmp
 .modules.*.cmd
 .Module.*.cmd
+/flags.cfg
 
 # sphinx
 /docs/_build/
@@ -62,6 +63,7 @@ __pycache__/
 .coverage
 .coverage.*
 coverage.xml
+*.egg-info/
 
 # mine
 /.pydmt/
