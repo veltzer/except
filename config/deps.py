@@ -1,6 +1,6 @@
 packages = [
-    'doxygen',
-    'libexplain51',
-    'libexplain-dev',
-    'libexplain-doc',
+    "doxygen",
+    "libexplain51",
+    "libexplain-dev",
+    "libexplain-doc",
 ]
