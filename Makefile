@@ -45,11 +45,6 @@ ifeq ($(DO_DEBUG),1)
 BASE_FLAGS:=$(BASE_FLAGS) -g2
 endif # DO_DEBUG
 
-# dependency on the makefile itself
-ifeq ($(DO_ALLDEP),1)
-.EXTRA_PREREQS+=$(foreach mk, ${MAKEFILE_LIST},$(abspath ${mk}))
-endif # DO_ALLDEP
-
 # the library we create
 LIB:=lib$(LIBNAME).so
 LIBCC:=lib$(LIBNAMECC).so
@@ -138,3 +133,10 @@ test/test_nolink.elf: test/test_nolink.c
 test/test_nolinkcc.elf: test/test_nolinkcc.cc
 	$(info doing [$@])
 	$(Q)$(CXX) $(CXXFLAGS) -o $@ $< $(LD_EMPTY)
+
+##########
+# alldep #
+##########
+ifeq ($(DO_ALLDEP),1)
+.EXTRA_PREREQS+=$(foreach mk, ${MAKEFILE_LIST},$(abspath ${mk}))
+endif # DO_ALLDEP
