@@ -1,6 +1,6 @@
-####################
-# user paramaeters #
-####################
+##############
+# parameters #
+##############
 # should we show commands executed ?
 DO_MKDBG:=0
 # do you want debugging enabled?
@@ -10,9 +10,9 @@ TARGET_DIR:=/usr
 # do you want dependency on the Makefile itself ?
 DO_ALLDEP:=1
 
-#######################
-# non user parameters #
-#######################
+########
+# code #
+########
 # basic flags to use
 BASE_FLAGS:=-O2 -fpic -Wall -Werror
 # where to install the shared library?
@@ -30,9 +30,6 @@ INC:=lib/except.h
 CC:=gcc
 CXX:=g++
 
-########
-# BODY #
-########
 ifeq ($(DO_MKDBG),1)
 Q=
 # we are not silent in this branch
