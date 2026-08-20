@@ -1,1 +1,19 @@
 # Repo-specific overlay. Deep-merged over the canonical rsconstruct.toml.
+
+# The Makefile built two shared libraries (libexcept.so from lib/except.c and
+# libexceptcc.so from lib/exceptcc.cc, -shared -fpic -ldl) and four test
+# binaries, two of which link the libraries. That multi-object, lib-before-tests
+# link is beyond the single-file C processor, so scripts/build_except.py runs
+# the exact sequence. (The Makefile's install target was a separate `sudo
+# install` to /usr -- a deploy action, not a build.)
+[processor.explicit.except]
+command = "scripts/build_except.py"
+input_globs = ["lib/*.c", "lib/*.cc", "lib/*.h", "test/*.c", "test/*.cc"]
+output_files = [
+    "libexcept.so",
+    "libexceptcc.so",
+    "test/test_link.elf",
+    "test/test_linkcc.elf",
+    "test/test_nolink.elf",
+    "test/test_nolinkcc.elf",
+]
